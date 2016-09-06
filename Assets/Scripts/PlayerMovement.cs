@@ -72,8 +72,7 @@ public class PlayerMovement : MonoBehaviour {
             animator.SetBool("Grounded", grounded);
         }else if (collision.gameObject.name == "Underworld" || collision.gameObject.tag == "Spike")
         {
-            dead = true;
-            animator.SetBool("Dead", dead);
+            PublicDead();
         }
     }
     void OnCollisionStay2D(Collision2D collision)
@@ -91,6 +90,11 @@ public class PlayerMovement : MonoBehaviour {
         {
             transform.parent = null;
         }
+    }
+    public void PublicDead()
+    {
+        dead = true;
+        animator.SetBool("Dead", dead);
     }
     void Die()
     {
