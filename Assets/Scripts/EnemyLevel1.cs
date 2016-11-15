@@ -10,6 +10,7 @@ public class EnemyLevel1 : MonoBehaviour {
     private bool exit;
     private Animator animator;
     private float pastDistance;
+	public AudioSource killEffect;
     // Use this for initialization
     void Start () {
         minDistance = 0f;
@@ -25,14 +26,17 @@ public class EnemyLevel1 : MonoBehaviour {
         if (!exit)
         {
             range = Vector2.Distance(transform.position, target);
+
             if (range > minDistance)
             {
                 transform.position = Vector2.MoveTowards(transform.position, target, speed * Time.deltaTime);
+
             }
         }
         else
         {
             transform.Translate(0, speed * Time.deltaTime, 0);
+
         }
         
     }
@@ -42,6 +46,8 @@ public class EnemyLevel1 : MonoBehaviour {
         {
             exit = true;
             collider.gameObject.GetComponent<PlayerMovement>().PublicDead();
+			//killEffect.Play ();
+
         }
     }
     IEnumerator targetChange()
