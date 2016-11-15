@@ -16,6 +16,10 @@ public class PlayerMovement2 : MonoBehaviour {
     // Animator Values
     private bool grounded;
     private bool faceRight;
+    private bool attacking;
+
+    // Weapons
+    public GameObject kunai;
 
     // Coroutines
     private IEnumerator dieTimer;
@@ -27,7 +31,7 @@ public class PlayerMovement2 : MonoBehaviour {
         jumpSpeed = 4f;
         life = 100;
         pushForce = 2.3f;
-        secondsToDie = 3;
+        secondsToDie = 2;
 
         // Physics and animator
         rigidBody = GetComponent<Rigidbody2D>();
@@ -36,9 +40,10 @@ public class PlayerMovement2 : MonoBehaviour {
         // Animator Values
         grounded = false;
         faceRight = true;
+        attacking = false;
 
-        // Coroutines
-        dieTimer = dieTimerCorutine();
+         // Coroutines
+         dieTimer = dieTimerCorutine();
     }
 	
 	// Update is called once per frame
@@ -57,6 +62,10 @@ public class PlayerMovement2 : MonoBehaviour {
             CheckMove();
             CheckJump();
             CheckAttack();
+            CheckThrowKunai();
+        }else
+        {
+            life = 0;
         }
     }
     private void CheckMove()
@@ -86,14 +95,52 @@ public class PlayerMovement2 : MonoBehaviour {
             Attack();
         }
     }
+    private void CheckThrowKunai()
+    {
+        if (Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(KeyCode.Joystick1Button3))
+        {
+            ThrowKunai();
+        }
+    }
     public void Attack()
     {
+        attacking = true;
         animator.SetTrigger("Attacking");
+    }
+    public void StopAttack()
+    {
+        attacking = false;
     }
     private void Rotate()
     {
         faceRight = !faceRight;
         animator.transform.Rotate(0, 180, 0);
+    }
+    public void ThrowKunai()
+    {
+        if (GameObject.FindWithTag("Kunai") == null)
+        {
+            animator.SetTrigger("ThrowKunai");
+            if (faceRight)
+            {
+                GameObject kunaiclone = (GameObject)Instantiate(kunai, transform.position, Quaternion.Euler(new Vector3(0, 0, -90)));
+                kunaiclone.SendMessage("ChangeDirection", "right");
+            }
+            else
+            {
+                GameObject kunaiclone = (GameObject)Instantiate(kunai, transform.position, Quaternion.Euler(new Vector3(0, 0, -270)));
+                kunaiclone.SendMessage("ChangeDirection", "left");
+            }
+        }
+    }
+    private void StartDying()
+    {
+        animator.SetTrigger("Die");
+    }
+    public void Die()
+    {
+        // Die
+        Debug.Log("Died");
     }
     void OnCollisionEnter2D(Collision2D collision)
     {
@@ -124,7 +171,7 @@ public class PlayerMovement2 : MonoBehaviour {
             }
             if(count > secondsToDie)
             {
-                Debug.Log("Die");
+                StartDying();
                 StopCoroutine(dieTimer);
             }
             yield return new WaitForSeconds(1f);
