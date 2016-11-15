@@ -57,7 +57,7 @@ public class PlayerMovement : MonoBehaviour {
             transform.Translate(-h * speed * Time.deltaTime, 0, 0);
         }
         
-        if ((Input.GetKeyDown("up") || Input.GetKeyDown(KeyCode.W)) && grounded)
+        if ((Input.GetKeyDown("up") || Input.GetKeyDown(KeyCode.Joystick1Button1)) && grounded)
         {
             rigidBody.AddForce(new Vector2(0, jumpSpeed), ForceMode2D.Impulse);
             grounded = false;
