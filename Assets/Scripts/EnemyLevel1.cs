@@ -46,7 +46,7 @@ public class EnemyLevel1 : MonoBehaviour {
         {
             exit = true;
             collider.gameObject.GetComponent<PlayerMovement>().PublicDead();
-			//killEffect.Play ();
+			killEffect.Play ();
 
         }
     }
