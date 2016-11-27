@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour {
     private Animator animator;
     private bool grounded;
     private bool dead;
+	public AudioSource deathSoundEffect;
     // Use this for initialization
     void Start()
     {
@@ -95,6 +96,7 @@ public class PlayerMovement : MonoBehaviour {
     {
         dead = true;
         animator.SetBool("Dead", dead);
+		deathSoundEffect.Play ();
     }
     void Die()
     {
