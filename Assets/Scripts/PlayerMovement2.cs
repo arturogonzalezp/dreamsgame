@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class PlayerMovement2 : MonoBehaviour {
     // Values
@@ -24,6 +25,9 @@ public class PlayerMovement2 : MonoBehaviour {
     // Coroutines
     private IEnumerator dieTimer;
 
+    // UI elements
+    public Text lifeDisplay;
+
     // Use this for initialization
     void Start () {
         // Values
@@ -44,6 +48,9 @@ public class PlayerMovement2 : MonoBehaviour {
 
          // Coroutines
          dieTimer = dieTimerCorutine();
+
+        // UI elements
+        lifeDisplay.text = life + "%";
     }
 	
 	// Update is called once per frame
@@ -81,7 +88,7 @@ public class PlayerMovement2 : MonoBehaviour {
     }
     private void CheckJump()
     {
-        if ((Input.GetKeyDown("up") || Input.GetKeyDown(KeyCode.Joystick1Button1)) && grounded)
+        if ((Input.GetKeyDown("up") || Input.GetKeyDown("joystick button 1")) && grounded)
         {
             rigidBody.AddForce(new Vector2(0, jumpSpeed), ForceMode2D.Impulse);
             grounded = false;
@@ -90,14 +97,14 @@ public class PlayerMovement2 : MonoBehaviour {
     }
     private void CheckAttack()
     {
-        if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.Joystick1Button0))
+        if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown("joystick button 0"))
         {
             Attack();
         }
     }
     private void CheckThrowKunai()
     {
-        if (Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(KeyCode.Joystick1Button3))
+        if (Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown("joystick button 3"))
         {
             ThrowKunai();
         }
@@ -141,6 +148,22 @@ public class PlayerMovement2 : MonoBehaviour {
     {
         // Die
         Debug.Log("Died");
+        life = 0;
+        lifeDisplay.text = life + "%";
+    }
+    public void Hit(int value, Vector2 dir)
+    {
+        life -= value;
+        //dir.y *= 1.2f;
+        if (life <= 0)
+        {
+            Die();
+        }
+        else
+        {
+            rigidBody.AddForce(dir * pushForce, ForceMode2D.Impulse);
+        }
+        lifeDisplay.text = life + "%";
     }
     void OnCollisionEnter2D(Collision2D collision)
     {
@@ -148,6 +171,12 @@ public class PlayerMovement2 : MonoBehaviour {
         {
             grounded = true;
             animator.SetBool("Grounded", grounded);
+        }else if(collision.gameObject.tag == "Tomb")
+        {
+            //animator.SetBool("Grounded", true);
+            Vector2 dir = collision.contacts[0].point - (Vector2)transform.position;
+            dir = dir.normalized;
+            Hit(5, -dir);
         }
     }
     void OnBecameInvisible()
