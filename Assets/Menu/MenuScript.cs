@@ -34,10 +34,10 @@ public class MenuScript : MonoBehaviour {
     }
     private void OpenOptions()
     {
-        Debug.Log("Open Options");
+        SceneManager.LoadScene("PanelControl");
     }
     private void ExitGame()
     {
-        Debug.Log("Exit Game");
+        Application.Quit();
     }
 }

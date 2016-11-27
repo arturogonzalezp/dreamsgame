@@ -100,6 +100,6 @@ public class PlayerMovement : MonoBehaviour {
     }
     void Die()
     {
-        SceneManager.LoadScene("Scene 1");
+        SceneManager.LoadScene("MenuGameOver");
     }
 }

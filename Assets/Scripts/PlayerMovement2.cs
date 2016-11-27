@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement2 : MonoBehaviour {
     // Values
@@ -9,6 +10,8 @@ public class PlayerMovement2 : MonoBehaviour {
     private int life;
     private float pushForce;
     private int secondsToDie;
+    private int countDead;
+    private int tombDamage;
 
     // Physics and animator
     private Rigidbody2D rigidBody;
@@ -36,9 +39,11 @@ public class PlayerMovement2 : MonoBehaviour {
         life = 100;
         pushForce = 2.3f;
         secondsToDie = 2;
+        countDead = 0;
+        tombDamage = 20;
 
-        // Physics and animator
-        rigidBody = GetComponent<Rigidbody2D>();
+       // Physics and animator
+       rigidBody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
 
         // Animator Values
@@ -146,10 +151,7 @@ public class PlayerMovement2 : MonoBehaviour {
     }
     public void Die()
     {
-        // Die
-        Debug.Log("Died");
-        life = 0;
-        lifeDisplay.text = life + "%";
+        SceneManager.LoadScene("MenuGameOver");
     }
     public void Hit(int value, Vector2 dir)
     {
@@ -157,7 +159,9 @@ public class PlayerMovement2 : MonoBehaviour {
         //dir.y *= 1.2f;
         if (life <= 0)
         {
-            Die();
+            life = 0;
+            lifeDisplay.text = life + "%";
+            StartDying();
         }
         else
         {
@@ -176,29 +180,31 @@ public class PlayerMovement2 : MonoBehaviour {
             //animator.SetBool("Grounded", true);
             Vector2 dir = collision.contacts[0].point - (Vector2)transform.position;
             dir = dir.normalized;
-            Hit(5, -dir);
+            Hit(tombDamage, -dir);
         }
     }
     void OnBecameInvisible()
     {
+        countDead = 0;
         StartCoroutine(dieTimer);
     }
     void OnBecameVisible()
     {
+        countDead = 0;
         StopCoroutine(dieTimer);
     }
     IEnumerator dieTimerCorutine()
     {
-        int count = 0;
+        countDead = 0;
         while (true)
         {
-            count++;
-            if(count != 1)
+            countDead++;
+            if(countDead != 1)
             {
                 //Debug.Log("Timer: " + (count-1));
                 // counter - 1 (Segundo actual)
             }
-            if(count > secondsToDie)
+            if(countDead > secondsToDie)
             {
                 StartDying();
                 StopCoroutine(dieTimer);
