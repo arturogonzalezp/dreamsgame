@@ -25,7 +25,7 @@ public class CameraLevel2 : MonoBehaviour {
         if(actualNode < nodes.Length)
         {
             float distance = Mathf.Abs(Vector3.Distance(transform.position, nodes[actualNode].position));
-            transform.position = Vector3.MoveTowards(transform.position, nodes[actualNode].position, speed * Time.deltaTime);
+            //transform.position = Vector3.MoveTowards(transform.position, nodes[actualNode].position, speed * Time.deltaTime);
             if (distance < threshold)
             {
                 actualNode++;

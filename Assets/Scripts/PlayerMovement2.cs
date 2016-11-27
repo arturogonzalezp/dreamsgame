@@ -40,10 +40,10 @@ public class PlayerMovement2 : MonoBehaviour {
         pushForce = 2.3f;
         secondsToDie = 2;
         countDead = 0;
-        tombDamage = 20;
+        tombDamage = 5;
 
-       // Physics and animator
-       rigidBody = GetComponent<Rigidbody2D>();
+        // Physics and animator
+        rigidBody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
 
         // Animator Values
@@ -145,10 +145,6 @@ public class PlayerMovement2 : MonoBehaviour {
             }
         }
     }
-    private void StartDying()
-    {
-        animator.SetTrigger("Die");
-    }
     public void Die()
     {
         SceneManager.LoadScene("MenuGameOver");
@@ -161,7 +157,7 @@ public class PlayerMovement2 : MonoBehaviour {
         {
             life = 0;
             lifeDisplay.text = life + "%";
-            StartDying();
+            animator.SetTrigger("Die");
         }
         else
         {
@@ -206,7 +202,7 @@ public class PlayerMovement2 : MonoBehaviour {
             }
             if(countDead > secondsToDie)
             {
-                StartDying();
+                animator.SetTrigger("Die");
                 StopCoroutine(dieTimer);
             }
             yield return new WaitForSeconds(1f);
