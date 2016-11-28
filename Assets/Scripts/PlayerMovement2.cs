@@ -13,6 +13,9 @@ public class PlayerMovement2 : MonoBehaviour {
     private int countDead;
     private int tombDamage;
     private int zombieDamage;
+	public AudioSource jumpEffect;
+	public AudioSource throwEffect;
+	public AudioSource hurtEffect;
 
     // Physics and animator
     private Rigidbody2D rigidBody;
@@ -100,6 +103,7 @@ public class PlayerMovement2 : MonoBehaviour {
             rigidBody.AddForce(new Vector2(0, jumpSpeed), ForceMode2D.Impulse);
             grounded = false;
             animator.SetBool("Grounded", grounded);
+			jumpEffect.Play ();
         }
     }
     private void CheckAttack()
@@ -114,6 +118,7 @@ public class PlayerMovement2 : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown("joystick button 3"))
         {
             ThrowKunai();
+			throwEffect.Play ();
         }
     }
     public void Attack()
@@ -160,10 +165,13 @@ public class PlayerMovement2 : MonoBehaviour {
             life = 0;
             lifeDisplay.text = life + "%";
             animator.SetTrigger("Die");
+
         }
         else
         {
             rigidBody.AddForce(dir * pushForce, ForceMode2D.Impulse);
+			hurtEffect.Play ();
+
         }
         lifeDisplay.text = life + "%";
     }

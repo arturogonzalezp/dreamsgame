@@ -14,10 +14,10 @@ public class CameraLevel2 : MonoBehaviour {
         threshold = 0.02f;
 
         // Test
-        /*GameObject player = GameObject.Find("Player");
+        GameObject player = GameObject.Find("Player");
         transform.position = nodes[1].position;
         actualNode = 1;
-        player.gameObject.transform.position = new Vector2(0f, 1.37f);*/
+        player.gameObject.transform.position = new Vector2(0f, 1.37f);
 	}
 	
 	// Update is called once per frame

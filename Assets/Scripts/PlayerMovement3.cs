@@ -102,7 +102,24 @@ public class PlayerMovement3 : MonoBehaviour {
 		animator.transform.Rotate(0, 180, 0);
 	}
 	public void Shoot(){
-	
+		if (GameObject.FindWithTag("Bullet") == null)
+		{
+			animator.SetTrigger("Shoot");
+			if (faceRight)
+			{
+				GameObject bulletclone = (GameObject)Instantiate(Bullet, transform.position, Quaternion.Euler(new Vector3(0, 0, -90)));
+				bulletclone.SendMessage("ChangeDirection", "right");
+			}
+			else
+			{
+				GameObject bulletclone = (GameObject)Instantiate(Bullet, transform.position, Quaternion.Euler(new Vector3(0, 0, -270)));
+				bulletclone.SendMessage("ChangeDirection", "left");
+			}
+		}
+	}
+	public void Die()
+	{
+		SceneManager.LoadScene("MenuGameOver");
 	}
 
 }

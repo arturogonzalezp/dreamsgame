@@ -7,6 +7,8 @@ public class EnemyLevel2 : MonoBehaviour {
     private int life;
     private float speed;
     private float threeshold;
+	public AudioSource zombieEffect;
+	public AudioSource zombieDeathEffect;
 
     // Physics and animator
     private Rigidbody2D rigidBody;
@@ -80,10 +82,12 @@ public class EnemyLevel2 : MonoBehaviour {
     {
         moving = true;
         animator.SetBool("Moving", true);
+		zombieEffect.Play ();
     }
     public void Die()
     {
         Destroy(gameObject);
+		zombieDeathEffect.Play ();
     }
     public void Hit(float pushForce, Vector2 dir)
     {
