@@ -8,6 +8,7 @@ public class PlayerMovement3 : MonoBehaviour {
 	public float speed;
 	public float jumpSpeed;
 	private int life;
+	private float pushForce;
 
 
 
@@ -39,6 +40,7 @@ public class PlayerMovement3 : MonoBehaviour {
 		speed = 1.5f;
 		jumpSpeed = 4f;
 		life = 100;
+		pushForce = 2.3f;
 
 		// Physics and animator
 		rigidBody = GetComponent<Rigidbody2D>();
@@ -120,6 +122,24 @@ public class PlayerMovement3 : MonoBehaviour {
 	public void Die()
 	{
 		SceneManager.LoadScene("MenuGameOver");
+	}
+	public void Hit(int value, Vector2 dir)
+	{
+		life -= value;
+		//dir.y *= 1.2f;
+		if (life <= 0)
+		{
+			life = 0;
+			lifeDisplay.text = life + "%";
+			animator.SetTrigger("Die");
+
+		}
+		else
+		{
+			rigidBody.AddForce(dir * pushForce, ForceMode2D.Impulse);
+
+		}
+		lifeDisplay.text = life + "%";
 	}
 
 }

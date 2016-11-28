@@ -56,7 +56,7 @@ public class Bullet : MonoBehaviour {
 			{
 				dir.x = 1;
 			}
-			//collider.gameObject.GetComponent<EnemyLevel2>().Hit(dir);
+			//collider.gameObject.GetComponent<EnemyLevel3>().Hit(dir);
 		}
 		if (collider.gameObject.name != "Player")
 		{
