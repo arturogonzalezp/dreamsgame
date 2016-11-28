@@ -57,7 +57,7 @@ public class Kunai : MonoBehaviour {
                 dir.x = 1;
             }
 
-            collider.gameObject.GetComponent<EnemyLevel2>().Hit(dir);
+            collider.gameObject.GetComponent<EnemyLevel2>().Hit(1.7f, dir);
         }
         if (collider.gameObject.name != "Player")
         {

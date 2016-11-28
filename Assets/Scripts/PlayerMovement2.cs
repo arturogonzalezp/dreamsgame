@@ -12,6 +12,7 @@ public class PlayerMovement2 : MonoBehaviour {
     private int secondsToDie;
     private int countDead;
     private int tombDamage;
+    private int zombieDamage;
 
     // Physics and animator
     private Rigidbody2D rigidBody;
@@ -41,6 +42,7 @@ public class PlayerMovement2 : MonoBehaviour {
         secondsToDie = 2;
         countDead = 0;
         tombDamage = 5;
+        zombieDamage = 15;
 
         // Physics and animator
         rigidBody = GetComponent<Rigidbody2D>();
@@ -173,10 +175,20 @@ public class PlayerMovement2 : MonoBehaviour {
             animator.SetBool("Grounded", grounded);
         }else if(collision.gameObject.tag == "Tomb")
         {
-            //animator.SetBool("Grounded", true);
             Vector2 dir = collision.contacts[0].point - (Vector2)transform.position;
             dir = dir.normalized;
             Hit(tombDamage, -dir);
+        }else if(collision.gameObject.tag == "Zombie")
+        {
+            Vector2 dir = collision.contacts[0].point - (Vector2)transform.position;
+            dir = dir.normalized;
+            if (attacking)
+            {
+                collision.gameObject.GetComponent<EnemyLevel2>().Hit(2.8f, dir);
+            }else
+            {
+                Hit(zombieDamage, -dir);
+            }
         }
     }
     void OnBecameInvisible()
