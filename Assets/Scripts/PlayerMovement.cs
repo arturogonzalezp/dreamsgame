@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour {
     private bool grounded;
     private bool dead;
 	public AudioSource deathSoundEffect;
+	public AudioSource jumpEffect;
     // Use this for initialization
     void Start()
     {
@@ -63,6 +64,7 @@ public class PlayerMovement : MonoBehaviour {
             rigidBody.AddForce(new Vector2(0, jumpSpeed), ForceMode2D.Impulse);
             grounded = false;
             animator.SetBool("Grounded", grounded);
+			jumpEffect.Play ();
         }
     }
     void OnCollisionEnter2D(Collision2D collision)
