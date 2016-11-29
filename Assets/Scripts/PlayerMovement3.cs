@@ -37,7 +37,7 @@ public class PlayerMovement3 : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		//Values
-		speed = 1.5f;
+		speed = 2.0f;
 		jumpSpeed = 4f;
 		life = 100;
 		pushForce = 2.3f;
@@ -52,7 +52,7 @@ public class PlayerMovement3 : MonoBehaviour {
 		shooting = false;
 
 		// UI elements
-		lifeDisplay.text = life + "%";
+		//lifeDisplay.text = life + "%";
 	
 	}
 	
@@ -140,6 +140,13 @@ public class PlayerMovement3 : MonoBehaviour {
 
 		}
 		lifeDisplay.text = life + "%";
+	}
+	void OnCollisionEnter2D(Collision2D collision)
+	{
+		if (collision.gameObject.tag == "Floor" || collision.gameObject.tag == "MovingFloor") {
+			grounded = true;
+			animator.SetBool ("Grounded", grounded);
+		}
 	}
 
 }
