@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class EnemyLevel3 : MonoBehaviour {
 
@@ -43,6 +44,17 @@ public class EnemyLevel3 : MonoBehaviour {
 	void Update () {
 		Move ();
 	}
+    public bool isDead()
+    {
+        if(life > 0)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
 	private void Move()
 	{
 		float distance = transform.position.x - player.transform.position.x;
@@ -87,6 +99,7 @@ public class EnemyLevel3 : MonoBehaviour {
 	}
     public void Die()
     {
-        Destroy(gameObject);
+        SceneManager.LoadScene("MenuCompleted");
+        //Destroy(gameObject);
     }
 }

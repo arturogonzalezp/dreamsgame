@@ -147,7 +147,11 @@ public class PlayerMovement3 : MonoBehaviour {
     }
     void OnBecameInvisible()
     {
-        SceneManager.LoadScene("MenuGameOver");
+        if (!GameObject.FindGameObjectWithTag("Santa").GetComponent<EnemyLevel3>().isDead())
+        {
+            SceneManager.LoadScene("MenuGameOver");
+        }
+
     }
     void OnCollisionEnter2D(Collision2D collision)
 	{
