@@ -44,7 +44,7 @@ public class MenuScript : MonoBehaviour {
     }
 	private void AboutGame()
 	{
-	SceneManager.LoadScene ("Menu About");
+	SceneManager.LoadScene ("MenuAbout");
 	}
 
 
