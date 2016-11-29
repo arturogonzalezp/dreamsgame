@@ -7,26 +7,28 @@ public class MenuScript : MonoBehaviour {
     public Button start;
     public Button options;
     public Button exit;
+	public Button about;
 	// Use this for initialization
 	void Start () {
         start.onClick.AddListener(() => { StartGame(); });
         options.onClick.AddListener(() => { OpenOptions(); });
         exit.onClick.AddListener(() => { ExitGame(); });
+		about.onClick.AddListener (() => {
+			AboutGame ();
+		});
     }
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetKeyDown("joystick button 1"))
-        {
-            StartGame();
-        }else if (Input.GetKeyDown("joystick button 0"))
-        {
-            OpenOptions();
-        }
-        else if (Input.GetKeyDown("joystick button 2"))
-        {
-            ExitGame();
-        }
+		if (Input.GetKeyDown ("joystick button 1")) {
+			StartGame ();
+		} else if (Input.GetKeyDown ("joystick button 0")) {
+			OpenOptions ();
+		} else if (Input.GetKeyDown ("joystick button 2")) {
+			ExitGame ();
+		} else if (Input.GetKeyDown ("joystick button 3")) {
+			AboutGame ();
+		}
 	}
     private void StartGame()
     {
@@ -40,4 +42,11 @@ public class MenuScript : MonoBehaviour {
     {
         Application.Quit();
     }
+	private void AboutGame()
+	{
+	SceneManager.LoadScene ("Menu About");
+	}
+
+
+	
 }
