@@ -16,6 +16,8 @@ public class PlayerMovement2 : MonoBehaviour {
 	public AudioSource jumpEffect;
 	public AudioSource throwEffect;
 	public AudioSource hurtEffect;
+	public AudioSource swordEffect;
+	public AudioSource deathEffect;
 
     // Physics and animator
     private Rigidbody2D rigidBody;
@@ -123,6 +125,7 @@ public class PlayerMovement2 : MonoBehaviour {
     public void Attack()
     {
         attacking = true;
+		swordEffect.Play ();
         animator.SetTrigger("Attacking");
     }
     public void StopAttack()
@@ -154,6 +157,7 @@ public class PlayerMovement2 : MonoBehaviour {
     }
     public void Die()
     {
+		deathEffect.Play ();
         SceneManager.LoadScene("MenuGameOver");
     }
     public void Hit(int value, Vector2 dir)

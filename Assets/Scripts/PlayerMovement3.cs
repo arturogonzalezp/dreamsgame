@@ -9,6 +9,10 @@ public class PlayerMovement3 : MonoBehaviour {
 	public float jumpSpeed;
 	private int life;
 	private float pushForce;
+	public AudioSource shootEffect;
+	public AudioSource hurtEffect;
+	public AudioSource deathEffect;
+	public AudioSource jumpEffect;
 
 
 
@@ -87,6 +91,7 @@ public class PlayerMovement3 : MonoBehaviour {
 	private void CheckJump(){
 		if ((Input.GetKeyDown("up") || Input.GetKeyDown("joystick button 1")) && grounded)
 		{
+			jumpEffect.Play ();
 			rigidBody.AddForce(new Vector2(0, jumpSpeed), ForceMode2D.Impulse);
 			grounded = false;
 			animator.SetBool("Grounded", grounded);
@@ -97,6 +102,7 @@ public class PlayerMovement3 : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown("joystick button 0"))
 		{
 			Shoot();
+			shootEffect.Play ();
 		}
 	}
 	private void Rotate(){
@@ -122,6 +128,7 @@ public class PlayerMovement3 : MonoBehaviour {
 	public void Die()
 	{
 		SceneManager.LoadScene("MenuGameOver");
+		deathEffect.Play ();
 	}
 	/*public void Hit(int value, Vector2 dir)
 	{
@@ -144,6 +151,7 @@ public class PlayerMovement3 : MonoBehaviour {
     public void Hit(Vector2 dir)
     {
         rigidBody.AddForce(dir * pushForce, ForceMode2D.Impulse);
+		hurtEffect.Play ();
     }
     void OnBecameInvisible()
     {

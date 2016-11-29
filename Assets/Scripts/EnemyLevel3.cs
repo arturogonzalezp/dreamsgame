@@ -9,6 +9,8 @@ public class EnemyLevel3 : MonoBehaviour {
     private int multiplicator;
 	private float speed;
 	private float threeshold;
+	public AudioSource hohoEffect;
+	public AudioSource deathEffect;
 
 	// Physics and animator
 	private Rigidbody2D rigidBody;
@@ -43,6 +45,7 @@ public class EnemyLevel3 : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		Move ();
+
 	}
     public bool isDead()
     {
@@ -84,6 +87,7 @@ public class EnemyLevel3 : MonoBehaviour {
 	{
 		moving = true;
 		animator.SetBool("Moving", true);
+		hohoEffect.Play ();
 
 	}
 	public void Hit(float pushForce, Vector2 dir)
@@ -100,6 +104,7 @@ public class EnemyLevel3 : MonoBehaviour {
     public void Die()
     {
         SceneManager.LoadScene("MenuCompleted");
+		deathEffect.Play ();
         //Destroy(gameObject);
     }
 }
