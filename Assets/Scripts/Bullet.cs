@@ -9,7 +9,7 @@ public class Bullet : MonoBehaviour {
 	void Start()
 	{
 		// Values
-		speed = 3.6f;
+		speed = 5.6f;
 	}
 
 	void Update()
@@ -45,7 +45,7 @@ public class Bullet : MonoBehaviour {
 	}
 	void OnTriggerEnter2D(Collider2D collider)
 	{
-		if (collider.gameObject.tag == "Zombie")
+		if (collider.gameObject.name == "Enemy")
 		{
 			Vector2 dir = new Vector2(0, 0);
 			if (direction == "left")
@@ -56,7 +56,7 @@ public class Bullet : MonoBehaviour {
 			{
 				dir.x = 1;
 			}
-			//collider.gameObject.GetComponent<EnemyLevel3>().Hit(dir);
+			collider.gameObject.GetComponent<EnemyLevel3>().Hit(2.5f,dir);
 		}
 		if (collider.gameObject.name != "Player")
 		{

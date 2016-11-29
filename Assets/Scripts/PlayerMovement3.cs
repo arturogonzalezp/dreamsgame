@@ -37,10 +37,10 @@ public class PlayerMovement3 : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		//Values
-		speed = 2.0f;
-		jumpSpeed = 4f;
+		speed = 3.0f;
+		jumpSpeed = 7f;
 		life = 100;
-		pushForce = 2.3f;
+		pushForce = 3.7f;
 
 		// Physics and animator
 		rigidBody = GetComponent<Rigidbody2D>();
@@ -94,7 +94,7 @@ public class PlayerMovement3 : MonoBehaviour {
 	
 	}
 	private void CheckShoot(){
-		if (Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown("joystick button 3"))
+		if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown("joystick button 0"))
 		{
 			Shoot();
 		}
@@ -109,12 +109,12 @@ public class PlayerMovement3 : MonoBehaviour {
 			animator.SetTrigger("Shoot");
 			if (faceRight)
 			{
-				GameObject bulletclone = (GameObject)Instantiate(Bullet, transform.position, Quaternion.Euler(new Vector3(0, 0, -90)));
+				GameObject bulletclone = (GameObject)Instantiate(Bullet, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
 				bulletclone.SendMessage("ChangeDirection", "right");
 			}
 			else
 			{
-				GameObject bulletclone = (GameObject)Instantiate(Bullet, transform.position, Quaternion.Euler(new Vector3(0, 0, -270)));
+				GameObject bulletclone = (GameObject)Instantiate(Bullet, transform.position, Quaternion.Euler(new Vector3(0, 0, -180)));
 				bulletclone.SendMessage("ChangeDirection", "left");
 			}
 		}
@@ -123,7 +123,7 @@ public class PlayerMovement3 : MonoBehaviour {
 	{
 		SceneManager.LoadScene("MenuGameOver");
 	}
-	public void Hit(int value, Vector2 dir)
+	/*public void Hit(int value, Vector2 dir)
 	{
 		life -= value;
 		//dir.y *= 1.2f;
@@ -139,14 +139,27 @@ public class PlayerMovement3 : MonoBehaviour {
 			rigidBody.AddForce(dir * pushForce, ForceMode2D.Impulse);
 
 		}
-		lifeDisplay.text = life + "%";
-	}
-	void OnCollisionEnter2D(Collision2D collision)
+		//lifeDisplay.text = life + "%";
+	}*/
+    public void Hit(Vector2 dir)
+    {
+        rigidBody.AddForce(dir * pushForce, ForceMode2D.Impulse);
+    }
+    void OnBecameInvisible()
+    {
+        SceneManager.LoadScene("MenuGameOver");
+    }
+    void OnCollisionEnter2D(Collision2D collision)
 	{
 		if (collision.gameObject.tag == "Floor" || collision.gameObject.tag == "MovingFloor") {
 			grounded = true;
 			animator.SetBool ("Grounded", grounded);
-		}
+		}else if(collision.gameObject.tag == "Santa")
+        {
+            Vector2 dir = collision.contacts[0].point - (Vector2)transform.position;
+            dir = dir.normalized;
+            Hit(-dir);
+        }
 	}
 
 }

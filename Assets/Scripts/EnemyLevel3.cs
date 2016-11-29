@@ -5,6 +5,7 @@ public class EnemyLevel3 : MonoBehaviour {
 
 	// Values
 	private int life;
+    private int multiplicator;
 	private float speed;
 	private float threeshold;
 
@@ -22,8 +23,9 @@ public class EnemyLevel3 : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		// Values
-		life = 4;
-		speed = 0.35f;
+		life = 20;
+        multiplicator = life;
+        speed = 1f;
 		threeshold = 0.27f;
 
 		// Physics and animator
@@ -31,19 +33,18 @@ public class EnemyLevel3 : MonoBehaviour {
 		animator = GetComponent<Animator>();
 
 		// Animator Values
-		faceRight = false;
+		faceRight = true;
 		moving = false;
-	
+
+        StartMoving();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		Move ();
-	
 	}
 	private void Move()
 	{
-		//float distance = Vector2.Distance(transform.position, player.transform.position);
 		float distance = transform.position.x - player.transform.position.x;
 		if(distance < 0 && !faceRight)
 		{
@@ -54,7 +55,12 @@ public class EnemyLevel3 : MonoBehaviour {
 		}
 		if (moving && life > 0)
 		{
-			transform.position = new Vector2(Vector2.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime).x,transform.position.y);
+            float m = (float)multiplicator / life;
+            if(m > 3.5f)
+            {
+                m = 3.5f;
+            }
+            transform.position = new Vector2(Vector2.MoveTowards(transform.position, player.transform.position, (speed * m) * Time.deltaTime).x,transform.position.y);
 		}
 	}
 	private void Rotate()
@@ -79,4 +85,8 @@ public class EnemyLevel3 : MonoBehaviour {
 			rigidBody.AddForce(dir * pushForce, ForceMode2D.Impulse);
 		}
 	}
+    public void Die()
+    {
+        Destroy(gameObject);
+    }
 }
