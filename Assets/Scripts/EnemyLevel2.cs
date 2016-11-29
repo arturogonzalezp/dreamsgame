@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class EnemyLevel2 : MonoBehaviour {
 
@@ -9,6 +10,7 @@ public class EnemyLevel2 : MonoBehaviour {
     private float threeshold;
 	public AudioSource zombieEffect;
 	public AudioSource zombieDeathEffect;
+    private bool attacking;
 
     // Physics and animator
     private Rigidbody2D rigidBody;
@@ -27,7 +29,8 @@ public class EnemyLevel2 : MonoBehaviour {
         // Values
         life = 4;
         speed = 0.35f;
-        threeshold = 0.27f;
+        threeshold = 0.3f;
+        attacking = false;
 
         // Physics and animator
         rigidBody = GetComponent<Rigidbody2D>();
@@ -41,21 +44,20 @@ public class EnemyLevel2 : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         Move();
-        //CheckAttack();
+        CheckAttack();
 	}
-    private void CheckAttack()
+    public int getLife()
     {
-        float distance = Mathf.Abs(Vector2.Distance(transform.position, player.transform.position));
-        Debug.Log(distance + ", " + threeshold);
-        if (threeshold >= distance)
-        {
-            animator.SetTrigger("Attack");
-            
-        }
+        return life;
+    }
+    public bool isAttacking()
+    {
+        return attacking;
     }
     public void StopAttack()
     {
         animator.SetTrigger("StopAttack");
+        attacking = false;
     }
     private void Move()
     {
@@ -73,6 +75,14 @@ public class EnemyLevel2 : MonoBehaviour {
             transform.position = new Vector2(Vector2.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime).x,transform.position.y);
         }
     }
+    private void CheckAttack()
+    {
+        if (Vector2.Distance(transform.position, player.transform.position) < threeshold)
+        {
+            attacking = true;
+            animator.SetTrigger("Attack");
+        }
+    }
     private void Rotate()
     {
         faceRight = !faceRight;
@@ -86,8 +96,14 @@ public class EnemyLevel2 : MonoBehaviour {
     }
     public void Die()
     {
+        int enemies = GameObject.FindGameObjectsWithTag("Zombie").Length;
+        Debug.Log(enemies);
+        if (enemies <= 1)
+        {
+            SceneManager.LoadScene("FinalLevel");
+        }
+        zombieDeathEffect.Play();
         Destroy(gameObject);
-		zombieDeathEffect.Play ();
     }
     public void Hit(float pushForce, Vector2 dir)
     {
@@ -102,15 +118,15 @@ public class EnemyLevel2 : MonoBehaviour {
     }
     void OnBecameVisible()
     {
-        Debug.Log(gameObject.name + " is visible");
         animator.SetTrigger("Visible");
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.name == "Player")
+        /*if(collision.gameObject.name == "Player")
         {
+            attacking = true;
             animator.SetTrigger("Attack");
-        }
+        }*/
     }
 }

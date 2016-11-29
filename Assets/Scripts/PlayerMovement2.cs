@@ -118,7 +118,6 @@ public class PlayerMovement2 : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown("joystick button 3"))
         {
             ThrowKunai();
-			throwEffect.Play ();
         }
     }
     public void Attack()
@@ -140,6 +139,7 @@ public class PlayerMovement2 : MonoBehaviour {
         if (GameObject.FindWithTag("Kunai") == null)
         {
             animator.SetTrigger("ThrowKunai");
+            throwEffect.Play();
             if (faceRight)
             {
                 GameObject kunaiclone = (GameObject)Instantiate(kunai, transform.position, Quaternion.Euler(new Vector3(0, 0, -90)));
@@ -195,7 +195,10 @@ public class PlayerMovement2 : MonoBehaviour {
                 collision.gameObject.GetComponent<EnemyLevel2>().Hit(2.8f, dir);
             }else
             {
-                Hit(zombieDamage, -dir);
+                if (collision.gameObject.GetComponent<EnemyLevel2>().isAttacking() && collision.gameObject.GetComponent<EnemyLevel2>().getLife() > 0)
+                {
+                    Hit(zombieDamage, -dir);
+                }
             }
         }
     }
